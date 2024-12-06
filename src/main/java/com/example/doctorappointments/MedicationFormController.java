@@ -8,6 +8,11 @@ import javafx.scene.control.*;
 
 
 public class MedicationFormController {
+    private int appointmentID;
+
+    @FXML
+    private Label title;
+
     @FXML
     private ComboBox<String> combo_pharmacy;
 
@@ -38,6 +43,11 @@ public class MedicationFormController {
 
     }
 
+    public void setAppointmentID(int appointmentID) {
+        System.out.println("Appointment ID: " + appointmentID);
+        this.appointmentID = appointmentID;
+        title.setText("Add New Prescription Medication : " + appointmentID);
+    }
 
     @FXML
     private void handleAddMedicamentAction() {

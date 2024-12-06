@@ -7,6 +7,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 public class TestFormController {
+    private int appointmentID;
+
+    @FXML
+    private Label title;
+
     @FXML
     private ComboBox<String> testsComboBox;
 
@@ -22,13 +27,16 @@ public class TestFormController {
     @FXML
     public void initialize() {
         ObservableList<String> testList = FXCollections.observableArrayList("Blood Test", "X-Ray", "MRI", "CT Scan", "Ultrasound", "ECG", "Echocardiogram", "Biopsy", "Allergy Test");
-
         testsComboBox.setItems(testList);
 
         testColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
-
     }
 
+    public void setAppointmentID(int appointmentID) {
+        System.out.println("Appointment ID: " + appointmentID);
+        this.appointmentID = appointmentID;
+        title.setText("Add New Prescription Test : " + appointmentID);
+    }
 
     @FXML
     private void handleAddTestAction() {
@@ -38,8 +46,6 @@ public class TestFormController {
             testsTableView.getItems().add(selectedTest);
         }
     }
-
-
 
     @FXML
     private void handleSubmitButtonAction() {

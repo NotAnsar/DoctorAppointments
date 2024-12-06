@@ -4,6 +4,7 @@ module com.example.doctorappointments {
 
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
+    requires java.sql;
 
     opens com.example.doctorappointments to javafx.fxml;
     exports com.example.doctorappointments;
