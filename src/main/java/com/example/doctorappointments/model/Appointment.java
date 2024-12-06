@@ -1,4 +1,4 @@
-package com.example.doctorappointments;
+package com.example.doctorappointments.model;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

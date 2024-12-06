@@ -1,4 +1,4 @@
-package com.example.doctorappointments;
+package com.example.doctorappointments.controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;

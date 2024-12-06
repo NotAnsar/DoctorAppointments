@@ -1,5 +1,6 @@
-package com.example.doctorappointments;
+package com.example.doctorappointments.controller;
 
+import com.example.doctorappointments.model.Appointment;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -119,7 +120,7 @@ public class AppointmentController {
     private void handleOrdonnanceTest(Appointment appointment) {
         System.out.println("Ordonnance Test clicked for: " + appointment.getIDPatient());
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("prescription-test-form.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/doctorappointments/prescription-test-form.fxml"));
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Test Prescription Form" + appointment.getIDPatient());
@@ -138,7 +139,8 @@ public class AppointmentController {
         System.out.println("Ordonnance Visite clicked for: " + appointment.getIDPatient());
 
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("prescription-medical-form.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/doctorappointments/prescription-medical-form.fxml"));
+
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Medical Prescription Form" + appointment.getIDPatient());

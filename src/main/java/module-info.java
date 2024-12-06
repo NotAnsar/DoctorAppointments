@@ -8,4 +8,8 @@ module com.example.doctorappointments {
 
     opens com.example.doctorappointments to javafx.fxml;
     exports com.example.doctorappointments;
+    exports com.example.doctorappointments.model;
+    opens com.example.doctorappointments.model to javafx.fxml;
+    exports com.example.doctorappointments.controller;
+    opens com.example.doctorappointments.controller to javafx.fxml;
 }
