@@ -1,11 +1,11 @@
 package com.example.doctorappointments.controller;
 
 
-import com.example.doctorappointments.model.Appointment;
 import com.example.doctorappointments.model.AppointmentDetails;
 import com.example.doctorappointments.model.Medication;
 import com.example.doctorappointments.model.Pharmacy;
 import com.example.doctorappointments.service.AppointmentService;
+import com.example.doctorappointments.service.OrdonnanceService;
 import com.example.doctorappointments.service.PharmacyService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -161,11 +161,9 @@ public class MedicationFormController {
         System.out.println("Selected Medicament: " + selectedMedicaments);
         System.out.println("Creation Date: " + java.time.LocalDate.now());
         System.out.println("Appointment ID: " + appointmentID);
-
-
-
-
-        String message = "Selected Medicaments: " + selectedMedicaments +
+        Boolean done=OrdonnanceService.insertOrdonnance(appointment.getIDDoctor(), java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()), pharmacyID, appointment.getIDPatient(), "Pending",medicationIDs);
+        if (done) {
+            String message = "Selected Medicaments: " + selectedMedicaments +
                 "\nMedicaments IDs: " + medicationIDs +
                 "\nSelected Pharmacy: " + selectedPharmacy +
                 "\nPharmacy ID: " + pharmacyID +
@@ -177,7 +175,11 @@ public class MedicationFormController {
                 "Patient : " + appointment.getPatientFullName();
 
 
-        showAlert(Alert.AlertType.INFORMATION, message);
+            showAlert(Alert.AlertType.INFORMATION, message);
+        }
+        else {
+            showAlert(Alert.AlertType.ERROR, "Error in inserting the prescription");
+        }
     }
 
 

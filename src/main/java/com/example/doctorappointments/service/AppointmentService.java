@@ -1,8 +1,6 @@
 package com.example.doctorappointments.service;
 
-import com.example.doctorappointments.model.Appointment;
 import com.example.doctorappointments.model.AppointmentDetails;
-
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

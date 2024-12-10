@@ -3,6 +3,7 @@ package com.example.doctorappointments.controller;
 import com.example.doctorappointments.model.AppointmentDetails;
 import com.example.doctorappointments.model.Test;
 import com.example.doctorappointments.service.AppointmentService;
+import com.example.doctorappointments.service.OrdonnanceService;
 import com.example.doctorappointments.service.TestService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -117,18 +118,25 @@ public class TestFormController {
         System.out.println("Selected Tests: " + selectedTests);
         System.out.println("Selected Test IDs: " + testIDs);
         System.out.println("Test Date: " + date_test.getValue());
+        Boolean done = OrdonnanceService.insertOrdonnanceTest(appointment.getIDDoctor(), java.sql.Timestamp.valueOf(date_test.getValue().atStartOfDay()), appointment.getIDPatient(), "Pending", testIDs);
 
-        String message = "Selected Tests : " + selectedTests +
-                "\nTests IDs: " + testIDs +
-                "\nTest Date: " + date_test.getValue()+ "\n" +
-                "Appointment ID: " + appointmentID + "\n" +
-                "Doctor : " + appointment.getDoctorFullName()+ "\n" +
-                "Doctor Id : " + appointment.getIDDoctor()+ "\n" +
-                "Patient Id : " + appointment.getIDPatient()+ "\n" +
-                "Patient : " + appointment.getPatientFullName();
+        if (done) {
+            String message = "Selected Tests : " + selectedTests +
+                    "\nTests IDs: " + testIDs +
+                    "\nTest Date: " + date_test.getValue()+ "\n" +
+                    "Appointment ID: " + appointmentID + "\n" +
+                    "Doctor : " + appointment.getDoctorFullName()+ "\n" +
+                    "Doctor Id : " + appointment.getIDDoctor()+ "\n" +
+                    "Patient Id : " + appointment.getIDPatient()+ "\n" +
+                    "Patient : " + appointment.getPatientFullName();
 
 
-        showAlert(Alert.AlertType.INFORMATION, message);
+            showAlert(Alert.AlertType.INFORMATION, message);
+        }
+        else {
+            showAlert(Alert.AlertType.ERROR, "Error in inserting the prescription");
+        }
+
     }
 
     private void showAlert(Alert.AlertType alertType, String message) {
