@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -34,6 +35,7 @@ public class AppointmentController {
     private TableColumn<Appointment, String> StatusTableColumn;
     @FXML
     private TableColumn<Appointment, Void> ActionsTableColumn;
+
 
 
     @FXML
@@ -140,7 +142,6 @@ public class AppointmentController {
 
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/doctorappointments/prescription-medical-form.fxml"));
-
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Medical Prescription Form" + appointment.getIDPatient());

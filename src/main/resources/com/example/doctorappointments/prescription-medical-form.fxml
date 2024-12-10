@@ -23,12 +23,12 @@
                      </font>
                   </Label>
 
-                  <Label id="label_doctor" layoutX="38.0" layoutY="97.0" text="Doctor: Dr. Smith">
+                  <Label fx:id="label_doctor" layoutX="38.0" layoutY="97.0" text="Doctor: Dr. Smith">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label id="label_patient" layoutX="37.0" layoutY="136.0" text="Patient: John Doe">
+                  <Label fx:id="label_patient" layoutX="37.0" layoutY="136.0" text="Patient: John Doe">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -49,7 +49,6 @@
                   <ComboBox id="combo_Medicament" fx:id="medicamentsComboBox" layoutX="38.0" layoutY="306.0" prefHeight="55.0" prefWidth="750.0" style="-fx-border-color: black; -fx-border-radius: 6px; -fx-font-size: 14px" />
                   <TableView fx:id="medicamentsTableView" layoutX="38.0" layoutY="375.0" prefHeight="159.0" prefWidth="831.0">
                      <columns>
-
                         <TableColumn fx:id="medicamentColumn" prefWidth="400.0" text="Medicament" />
                      </columns>
                   </TableView>

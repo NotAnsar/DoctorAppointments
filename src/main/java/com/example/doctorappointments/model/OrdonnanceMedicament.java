@@ -1,14 +1,14 @@
 package com.example.doctorappointments.model;
 import java.sql.Timestamp;
 
-public class Ordonnance {
+public class OrdonnanceMedicament {
     private Integer IDDoctor;
     private Timestamp DateCreation;
     private Integer IDPharmacien;
     private Integer IDPatient;
     private String Status;
 
-    public Ordonnance(Integer IDDoctor, Timestamp DateCreation, Integer IDPharmacien, Integer IDPatient, String Status) {
+    public OrdonnanceMedicament(Integer IDDoctor, Timestamp DateCreation, Integer IDPharmacien, Integer IDPatient, String Status) {
         this.IDDoctor = IDDoctor;
         this.DateCreation = DateCreation;
         this.IDPharmacien = IDPharmacien;

@@ -12,4 +12,6 @@ module com.example.doctorappointments {
     opens com.example.doctorappointments.model to javafx.fxml;
     exports com.example.doctorappointments.controller;
     opens com.example.doctorappointments.controller to javafx.fxml;
+    exports com.example.doctorappointments.service;
+    opens com.example.doctorappointments.service to javafx.fxml;
 }

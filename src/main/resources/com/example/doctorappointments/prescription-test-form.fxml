@@ -22,12 +22,12 @@
                                 <Font name="Arial Bold" size="26.0" />
                             </font>
                         </Label>
-                        <Label id="label_doctor" layoutX="38.0" layoutY="97.0" text="Doctor: Dr. Smith">
+                        <Label fx:id="label_doctor" layoutX="38.0" layoutY="97.0" text="Doctor: Dr. Smith">
                             <font>
                                 <Font name="System Bold" size="18.0" />
                             </font>
                         </Label>
-                        <Label id="label_patient" layoutX="37.0" layoutY="136.0" text="Patient: John Doe">
+                        <Label fx:id="label_patient" layoutX="37.0" layoutY="136.0" text="Patient: John Doe">
                             <font>
                                 <Font name="System Bold" size="18.0" />
                             </font>

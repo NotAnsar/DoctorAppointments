@@ -3,25 +3,30 @@ package com.example.doctorappointments.model;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-public class Appointment {
+public class AppointmentDetails {
     private Integer IDAppointment;
     private Integer IDDoctor;
     private Integer IDPatient;
     private Timestamp AppointmentDate;
-    private Double Price;
-    private Integer Paye;
-    private String Status;
-    private String Service;
+    private String DoctorFullName;
+    private String PatientFullName;
 
-    public Appointment(Integer IDAppointment, Integer IDDoctor, Integer IDPatient, Timestamp appointmentDate, Double price, Integer paye, String status, String service) {
+
+    public String getDoctorFullName() {
+        return DoctorFullName;
+    }
+
+    public String getPatientFullName() {
+        return PatientFullName;
+    }
+
+    public AppointmentDetails(Integer IDAppointment, Integer IDDoctor, Integer IDPatient, Timestamp appointmentDate, String doctorFullName, String patientFullName) {
         this.IDAppointment = IDAppointment;
         this.IDDoctor = IDDoctor;
         this.IDPatient = IDPatient;
         this.AppointmentDate = appointmentDate;
-        this.Price = price;
-        this.Paye = paye;
-        this.Status = status;
-        this.Service = service;
+        this.DoctorFullName = doctorFullName;
+        this.PatientFullName = patientFullName;
     }
 
     public Integer getIDAppointment() {
@@ -56,45 +61,26 @@ public class Appointment {
         this.AppointmentDate = appointmentDate;
     }
 
-    public Double getPrice() {
-        return Price;
-    }
-
-    public void setPrice(Double price) {
-        this.Price = price;
-    }
-
-    public Integer getPaye() {
-        return Paye;
-    }
-
-    public void setPaye(Integer paye) {
-        this.Paye = paye;
-    }
-
-    public String getStatus() {
-        return Status;
-    }
-
-    public void setStatus(String status) {
-        this.Status = status;
-    }
-
-    public String getService() {
-        return Service;
-    }
-
-    public void setService(String service) {
-        this.Service = service;
-    }
-
     public String getFormattedDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(AppointmentDate);
+    }
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "IDAppointment=" + IDAppointment +
+                ", IDDoctor=" + IDDoctor +
+                ", IDPatient=" + IDPatient +
+                ", AppointmentDate=" + AppointmentDate +
+                ", DoctorFullName='" + DoctorFullName + '\'' +
+                ", PatientFullName='" + PatientFullName + '\'' +
+                '}';
     }
 
     public String getFormattedTime() {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         return timeFormat.format(AppointmentDate);
     }
+
 }
