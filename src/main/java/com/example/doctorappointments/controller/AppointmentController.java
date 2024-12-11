@@ -1,6 +1,7 @@
 package com.example.doctorappointments.controller;
 
 import com.example.doctorappointments.model.Appointment;
+import com.example.doctorappointments.service.DatabaseConnection;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,13 +11,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.sql.*;
+import java.util.List;
 
 public class AppointmentController {
 
@@ -37,31 +38,38 @@ public class AppointmentController {
     private TableColumn<Appointment, Void> ActionsTableColumn;
 
 
-
     @FXML
     private Pagination pagination;
 
     private ObservableList<Appointment> appointments;
-    private int rowsPerPage = 11;
+    private int rowsPerPage = 14;
 
     @FXML
     private void initialize() {
 
-        appointments = FXCollections.observableArrayList(
-                new Appointment(1, 101, 201, Timestamp.valueOf("2025-05-01 12:24:18"), 100.0, 0, "Scheduled", "Checkup"),
-                new Appointment(2, 102, 202, Timestamp.valueOf("2024-12-05 10:00:00"), 150.0, 1, "Completed", "Routine"),
-                new Appointment(3, 103, 203, Timestamp.valueOf("2025-06-10 14:00:00"), 200.0, 0, "Scheduled", "Consultation"),
-                new Appointment(4, 104, 204, Timestamp.valueOf("2024-12-15 09:30:00"), 120.0, 1, "Completed", "Follow-up"),
-                new Appointment(5, 105, 205, Timestamp.valueOf("2024-12-25 11:00:00"), 130.0, 0, "Scheduled", "Checkup"),
-                new Appointment(6, 106, 206, Timestamp.valueOf("2025-07-01 15:30:00"), 140.0, 0, "Scheduled", "Routine"),
-                new Appointment(7, 107, 207, Timestamp.valueOf("2025-07-10 10:15:00"), 110.0, 1, "Completed", "Checkup")
-        );
+
+        List<Appointment> appointmentsFromDB = Appointment.getAllAppointments();
+        appointments = FXCollections.observableArrayList(appointmentsFromDB);
+//        appointments = FXCollections.observableArrayList(
+//                new Appointment(1, 101, 201, Timestamp.valueOf("2025-05-01 12:24:18"), 100.0, 0, "Scheduled", "Checkup"),
+//                new Appointment(2, 102, 202, Timestamp.valueOf("2024-12-05 10:00:00"), 150.0, 1, "Completed", "Routine"),
+//                new Appointment(3, 103, 203, Timestamp.valueOf("2025-06-10 14:00:00"), 200.0, 0, "Scheduled", "Consultation"),
+//                new Appointment(4, 104, 204, Timestamp.valueOf("2024-12-15 09:30:00"), 120.0, 1, "Completed", "Follow-up"),
+//                new Appointment(5, 105, 205, Timestamp.valueOf("2024-12-25 11:00:00"), 130.0, 0, "Scheduled", "Checkup"),
+//                new Appointment(6, 106, 206, Timestamp.valueOf("2025-07-01 15:30:00"), 140.0, 0, "Scheduled", "Routine"),
+//                new Appointment(7, 107, 207, Timestamp.valueOf("2025-07-10 10:15:00"), 110.0, 1, "Completed", "Checkup")
+//        );
 
 
 
         AppointmentTableView.setItems(appointments);
 
-        PatientNameTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty("Patient " + cellData.getValue().getIDPatient()));
+//        PatientNameTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty("Patient " + cellData.getValue().getIDPatient()));
+        PatientNameTableColumn.setCellValueFactory(cellData -> {
+            Appointment appointment = cellData.getValue();
+            String patientFullName = getPatientFullNameById(appointment.getIDPatient());
+            return new SimpleStringProperty(patientFullName);
+        });
         AppointmentDateTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFormattedDate()));
         AppointmentTimeTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFormattedTime()));
         ServiceTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getService()));
@@ -113,6 +121,25 @@ public class AppointmentController {
         });
     }
 
+    private String getPatientFullNameById(int patientId) {
+        String fullName = "";
+        String query = "SELECT Nom, Prenom FROM patient WHERE IDPatient = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, patientId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String nom = resultSet.getString("Nom");
+                String prenom = resultSet.getString("Prenom");
+                fullName = prenom + " " + nom;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fullName;
+    }
+
+
     private void updateTableView(int pageIndex) {
         int fromIndex = pageIndex * rowsPerPage;
         int toIndex = Math.min(fromIndex + rowsPerPage, appointments.size());
@@ -142,6 +169,7 @@ public class AppointmentController {
 
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/doctorappointments/prescription-medical-form.fxml"));
+
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Medical Prescription Form" + appointment.getIDPatient());

@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -121,22 +122,11 @@ public class TestFormController {
         Boolean done = OrdonnanceService.insertOrdonnanceTest(appointment.getIDDoctor(), java.sql.Timestamp.valueOf(date_test.getValue().atStartOfDay()), appointment.getIDPatient(), "Pending", testIDs);
 
         if (done) {
-            String message = "Selected Tests : " + selectedTests +
-                    "\nTests IDs: " + testIDs +
-                    "\nTest Date: " + date_test.getValue()+ "\n" +
-                    "Appointment ID: " + appointmentID + "\n" +
-                    "Doctor : " + appointment.getDoctorFullName()+ "\n" +
-                    "Doctor Id : " + appointment.getIDDoctor()+ "\n" +
-                    "Patient Id : " + appointment.getIDPatient()+ "\n" +
-                    "Patient : " + appointment.getPatientFullName();
-
-
-            showAlert(Alert.AlertType.INFORMATION, message);
-        }
-        else {
+            showAlert(Alert.AlertType.INFORMATION, "Prescription added successfully!");
+            ((Stage) title.getScene().getWindow()).close();
+        } else {
             showAlert(Alert.AlertType.ERROR, "Error in inserting the prescription");
         }
-
     }
 
     private void showAlert(Alert.AlertType alertType, String message) {

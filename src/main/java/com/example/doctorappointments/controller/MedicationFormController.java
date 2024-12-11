@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -163,19 +164,8 @@ public class MedicationFormController {
         System.out.println("Appointment ID: " + appointmentID);
         Boolean done=OrdonnanceService.insertOrdonnance(appointment.getIDDoctor(), java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()), pharmacyID, appointment.getIDPatient(), "Pending",medicationIDs);
         if (done) {
-            String message = "Selected Medicaments: " + selectedMedicaments +
-                "\nMedicaments IDs: " + medicationIDs +
-                "\nSelected Pharmacy: " + selectedPharmacy +
-                "\nPharmacy ID: " + pharmacyID +
-                "\nCreation Date: " + java.time.LocalDate.now() + "\n" +
-                "Appointment ID: " + appointmentID + "\n" +
-                "Doctor : " + appointment.getDoctorFullName()+ "\n" +
-                "Doctor Id : " + appointment.getIDDoctor()+ "\n" +
-                "Patient Id : " + appointment.getIDPatient()+ "\n" +
-                "Patient : " + appointment.getPatientFullName();
-
-
-            showAlert(Alert.AlertType.INFORMATION, message);
+            showAlert(Alert.AlertType.INFORMATION, "Prescription added successfully!");
+            ((Stage) title.getScene().getWindow()).close();
         }
         else {
             showAlert(Alert.AlertType.ERROR, "Error in inserting the prescription");

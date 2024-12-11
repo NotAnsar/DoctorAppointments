@@ -1,7 +1,12 @@
 package com.example.doctorappointments.model;
 
-import java.sql.Timestamp;
+
+import com.example.doctorappointments.service.DatabaseConnection;
+
+import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Appointment {
     private Integer IDAppointment;
@@ -97,4 +102,35 @@ public class Appointment {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         return timeFormat.format(AppointmentDate);
     }
+
+
+
+    public static List<Appointment> getAllAppointments() {
+        List<Appointment> appointments = new ArrayList<>();
+        String query = "SELECT * FROM appointment";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                Integer idAppointment = resultSet.getInt("IDAppointment");
+                Integer idDoctor = resultSet.getInt("IDDoctor");
+                Integer idPatient = resultSet.getInt("IDPatient");
+                Timestamp appointmentDate = resultSet.getTimestamp("AppointmentDate");
+                Double price = resultSet.getDouble("Price");
+                Integer paye = resultSet.getInt("Paye");
+                String status = resultSet.getString("Status");
+                String service = resultSet.getString("Service");
+
+                Appointment appointment = new Appointment(idAppointment, idDoctor, idPatient, appointmentDate, price, paye, status, service);
+                appointments.add(appointment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return appointments;
+    }
+
 }

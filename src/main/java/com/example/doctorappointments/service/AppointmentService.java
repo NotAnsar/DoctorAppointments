@@ -1,5 +1,4 @@
 package com.example.doctorappointments.service;
-
 import com.example.doctorappointments.model.AppointmentDetails;
 
 import java.sql.Connection;
@@ -8,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AppointmentService {
-
     public static AppointmentDetails getAppointmentById(int appointmentId) {
         AppointmentDetails appointment = null;
 
@@ -22,8 +20,6 @@ public class AppointmentService {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-
-
                 appointment = new AppointmentDetails(
                         rs.getInt("IDAppointment"),
                         rs.getInt("doctorID"),
@@ -32,15 +28,12 @@ public class AppointmentService {
                         rs.getString("doctorNom") + " " + rs.getString("doctorPrenom"),
                         rs.getString("patientNom") + " " + rs.getString("patientPrenom")
                 );
-
-
-
             }
         } catch (SQLException e) {
             System.err.println("Error retrieving appointment: " + e.getMessage());
         }
 
-
         return appointment;
     }
+
 }
