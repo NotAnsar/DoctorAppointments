@@ -106,7 +106,7 @@ public class MedicationFormController {
         System.out.println("Appointment ID: " + appointmentID);
         this.appointmentID = appointmentID;
         title.setText("Add New Prescription Medication : " + appointmentID);
-        appointment = AppointmentService.getAppointmentById(1);
+        appointment = AppointmentService.getAppointmentById(appointmentID);
 
 
         if (appointment != null) {

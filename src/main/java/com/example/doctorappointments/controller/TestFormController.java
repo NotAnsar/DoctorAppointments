@@ -73,7 +73,7 @@ public class TestFormController {
         this.appointmentID = appointmentID;
         title.setText("Add New Prescription Test : " + appointmentID);
 
-        appointment = AppointmentService.getAppointmentById(1);
+        appointment = AppointmentService.getAppointmentById(appointmentID);
 
 
         if (appointment != null) {

@@ -158,7 +158,7 @@ public class AppointmentController {
 
             // Pass the appointment ID to the next interface
             TestFormController controller = fxmlLoader.getController();
-            controller.setAppointmentID(appointment.getIDPatient());
+            controller.setAppointmentID(appointment.getIDAppointment());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -178,7 +178,7 @@ public class AppointmentController {
 
             // Pass the appointment ID to the next interface
             MedicationFormController controller = fxmlLoader.getController();
-            controller.setAppointmentID(appointment.getIDPatient());
+            controller.setAppointmentID(appointment.getIDAppointment());
         } catch (IOException e) {
             e.printStackTrace();
         }
