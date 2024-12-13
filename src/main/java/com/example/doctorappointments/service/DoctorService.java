@@ -1,5 +1,6 @@
 package com.example.doctorappointments.service;
 
+import com.example.doctorappointments.model.Doctor;
 import com.example.doctorappointments.model.Speciality;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,7 +10,38 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DoctorService {
+    public static ObservableList<Doctor> getDoctorDetails(int id) {
+        ObservableList<Doctor> doctors = FXCollections.observableArrayList();
 
+        String query = "SELECT * FROM doctor WHERE IDDoctor = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (!rs.isBeforeFirst()) { // Check if ResultSet is empty
+                System.out.println("No doctor found with ID: " + id);
+                return doctors;
+            }
+
+            while (rs.next()) {
+                Doctor doctor = new Doctor(
+                        rs.getInt("IDDoctor"),
+                        rs.getInt("IDSpeciality"),
+                        rs.getString("Nom"),
+                        rs.getString("Prenom"),
+                        rs.getString("Tel"),
+                        rs.getString("Adresse")
+                );
+                doctors.add(doctor);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving doctors: " + e.getMessage());
+        }
+
+        return doctors;
+    }
 
     public static boolean insertDoctor(int idSpeciality, String nom, String prenom, String tel, String adresse) {
         String sql = "INSERT INTO doctor (IDSpeciality, Nom, Prenom, Tel, Adresse) VALUES (?, ?, ?, ?, ?)";
@@ -28,6 +60,28 @@ public class DoctorService {
 
         } catch (SQLException e) {
             System.err.println("Error inserting doctor: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean updateDoctor(int id, int idSpeciality, String nom, String prenom, String tel, String adresse) {
+        String sql = "UPDATE doctor SET IDSpeciality = ?, Nom = ?, Prenom = ?, Tel = ?, Adresse = ? WHERE IDDoctor = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, idSpeciality);
+            pstmt.setString(2, nom);
+            pstmt.setString(3, prenom);
+            pstmt.setString(4, tel);
+            pstmt.setString(5, adresse);
+            pstmt.setInt(6, id);
+
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error updating doctor: " + e.getMessage());
             return false;
         }
     }
