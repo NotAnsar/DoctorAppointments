@@ -107,7 +107,7 @@ public class Appointment {
 
     public static List<Appointment> getAllAppointments() {
         List<Appointment> appointments = new ArrayList<>();
-        String query = "SELECT * FROM appointment";
+        String query = "SELECT * FROM appointment, service WHERE appointment.IDService = service.IDService";
 
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement();
@@ -121,7 +121,7 @@ public class Appointment {
                 Double price = resultSet.getDouble("Price");
                 Integer paye = resultSet.getInt("Paye");
                 String status = resultSet.getString("Status");
-                String service = resultSet.getString("Service");
+                String service = resultSet.getString("NameService");
 
                 Appointment appointment = new Appointment(idAppointment, idDoctor, idPatient, appointmentDate, price, paye, status, service);
                 appointments.add(appointment);

@@ -46,25 +46,9 @@ public class AppointmentController {
 
     @FXML
     private void initialize() {
-
-
         List<Appointment> appointmentsFromDB = Appointment.getAllAppointments();
         appointments = FXCollections.observableArrayList(appointmentsFromDB);
-//        appointments = FXCollections.observableArrayList(
-//                new Appointment(1, 101, 201, Timestamp.valueOf("2025-05-01 12:24:18"), 100.0, 0, "Scheduled", "Checkup"),
-//                new Appointment(2, 102, 202, Timestamp.valueOf("2024-12-05 10:00:00"), 150.0, 1, "Completed", "Routine"),
-//                new Appointment(3, 103, 203, Timestamp.valueOf("2025-06-10 14:00:00"), 200.0, 0, "Scheduled", "Consultation"),
-//                new Appointment(4, 104, 204, Timestamp.valueOf("2024-12-15 09:30:00"), 120.0, 1, "Completed", "Follow-up"),
-//                new Appointment(5, 105, 205, Timestamp.valueOf("2024-12-25 11:00:00"), 130.0, 0, "Scheduled", "Checkup"),
-//                new Appointment(6, 106, 206, Timestamp.valueOf("2025-07-01 15:30:00"), 140.0, 0, "Scheduled", "Routine"),
-//                new Appointment(7, 107, 207, Timestamp.valueOf("2025-07-10 10:15:00"), 110.0, 1, "Completed", "Checkup")
-//        );
-
-
-
         AppointmentTableView.setItems(appointments);
-
-//        PatientNameTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty("Patient " + cellData.getValue().getIDPatient()));
         PatientNameTableColumn.setCellValueFactory(cellData -> {
             Appointment appointment = cellData.getValue();
             String patientFullName = getPatientFullNameById(appointment.getIDPatient());

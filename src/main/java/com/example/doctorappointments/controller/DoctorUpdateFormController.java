@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 
 
 public class DoctorUpdateFormController implements Initializable {
-    private int doctorID=65656;
+    private int doctorID;
 
     @FXML
     private Label title;
@@ -39,15 +39,24 @@ public class DoctorUpdateFormController implements Initializable {
 
     private Map<String, Integer> specialityMap = new HashMap<>();
 
+    private DoctorsList doctorsListController; // Reference to DoctorsList controller
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadSpecialities();
+        //loadInitialData();
+    }
+
+
+    public void setDoctorID(int doctorID) {
+        this.doctorID = doctorID;
         loadInitialData();
     }
 
     private void loadInitialData() {
         ObservableList<Doctor> doctor = DoctorService.getDoctorDetails(doctorID);
-        System.out.println(doctor);
+
 
         if (doctor.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "No doctor found with ID: " + doctorID);
@@ -61,6 +70,7 @@ public class DoctorUpdateFormController implements Initializable {
         adresseField.setText(doctor.getFirst().getAdresse());
 
         String speciality = null;
+
         for (Map.Entry<String, Integer> entry : specialityMap.entrySet()) {
             if (entry.getValue().equals(doctor.getFirst().getIdSpeciality())) {
                 speciality = entry.getKey();
@@ -77,8 +87,8 @@ public class DoctorUpdateFormController implements Initializable {
 
 
         for (Speciality speciality : specialities) {
-            combo_speciality.getItems().add(speciality.getNomSpeciality());
-            specialityMap.put(speciality.getNomSpeciality(), speciality.getIdSpeciality());
+            combo_speciality.getItems().add(speciality.getIdSpeciality()+ " - " + speciality.getNomSpeciality());
+            specialityMap.put(speciality.getIdSpeciality()+ " - " + speciality.getNomSpeciality(), speciality.getIdSpeciality());
         }
 
     }
@@ -117,11 +127,24 @@ public class DoctorUpdateFormController implements Initializable {
 
         boolean done= DoctorService.updateDoctor(doctorID,specialityId, nom, prenom, tel, adresse);
         if (done) {
-            showAlert(Alert.AlertType.INFORMATION, "Doctor update successfully!");
+
+            showAlert(Alert.AlertType.INFORMATION, "Doctor updated successfully!");
+            // Close the update form
+            Stage stage = (Stage) title.getScene().getWindow();
+            stage.close();
+            // Refresh doctor data in DoctorsList
+            if (doctorsListController != null) {
+                doctorsListController.refreshDoctorData();
+            }
         }
         else {
             showAlert(Alert.AlertType.ERROR, "Error in update the doctor");
         }
+    }
+
+
+    public void setDoctorsListController(DoctorsList doctorsListController) {
+        this.doctorsListController = doctorsListController;
     }
 
     private void showAlert(Alert.AlertType alertType, String message) {

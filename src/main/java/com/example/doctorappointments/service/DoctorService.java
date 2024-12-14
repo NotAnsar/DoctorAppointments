@@ -108,4 +108,32 @@ public class DoctorService {
 
         return specialities;
     }
+
+    public ObservableList<Doctor> getAllDoctors() {
+        ObservableList<Doctor> doctors = FXCollections.observableArrayList();
+        String query = "SELECT doctor.IDDoctor, doctor.IDSpeciality, doctor.Nom, doctor.Prenom, doctor.Tel, doctor.Adresse, speciality.NomSpeciality " +
+                "FROM doctor " +
+                "JOIN speciality ON doctor.IDSpeciality = speciality.IDSpeciality";  // Modify this query to suit your database schema
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Doctor doctor = new Doctor(
+                        rs.getInt("IDDoctor"),
+                        rs.getInt("IDSpeciality"),
+                        rs.getString("Nom"),
+                        rs.getString("Prenom"),
+                        rs.getString("Tel"),
+                        rs.getString("Adresse")
+                );
+                doctor.setSpecialityName(rs.getString("NomSpeciality"));
+                doctors.add(doctor);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving doctors: " + e.getMessage());
+        }
+        return doctors;
+    }
 }
